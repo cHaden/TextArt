@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<link href='http://fonts.googleapis.com/css?family=Erica+One|Passion+One:400,900|Playfair+Display+SC:400,900' rel='stylesheet' type='text/css'>
+  
+</head>
+<body>
+
+	<!--hacky mcHackerson: trasparent div to make the google fonts load-->
+	<div style="color: transparent; height: 1px;">
+	<p style="font-family: Erica One">Erica One</p>
+	<p style="font-family: Passion One">Passion One</p>
+	<p style="font-family: Playfair Display SC">Playfair Display SC</p>
+	</div>
+
+
+    <label>
+      <code>Number of Blocks</code>
+      <input type="range" id="Number of Blocks" value="16" min="4" max="24" style="display: block">
+    </label>
+
+
+    <canvas id="canvas" width="800" height="800"></canvas>
+
+    <script src="../fabric.min.js"></script>
+    <script src="./fabrictest.js"></script>
+
+
+</body>
+</html>

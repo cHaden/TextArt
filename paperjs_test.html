@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link href='http://fonts.googleapis.com/css?family=Erica+One|Passion+One:400,900|Playfair+Display+SC:400,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Emilys+Candy|Irish+Grover|Vast+Shadow|Monoton|Kranky' rel='stylesheet' type='text/css'>
+
+    <meta charset="UTF-8">
+    <title>Paper JS Test</title>
+    <script type="text/javascript" src="./paperjs/dist/paper-full.js"></script>
+
+</head>
+<body>
+
+    <!--hacky mcHackerson: trasparent div to make the google fonts load-->
+    <div style="color: transparent; height: 1px;">
+    <p style="font-family: Erica One">Erica One</p>
+    <p style="font-family: Passion One">Passion One</p>
+    <p style="font-family: Playfair Display SC">Playfair Display SC</p>
+
+    <p style="font-family: Emilys Candy">Emilys Candy</p>
+    <p style="font-family: Irish Grover">Irish Grover</p>
+    <p style="font-family: Vast Shadow">Vast Shadow</p>
+    <p style="font-family: Monoton">Monoton</p>
+    <p style="font-family: Kranky">Kranky</p>
+    </div>
+
+    Please enter a name:<br>
+    <input type="text" name="name" value="Your name here" id="name">
+    <br><br>
+    Please select a color palette:<br>
+    <input type="radio" name="palette" value="0" id="r0">0<br>
+    <input type="radio" name="palette" value="1" id="r1">1<br>
+    <input type="radio" name="palette" value="2" id="r2">2<br>
+    <input type="radio" name="palette" value="3" id="r3">3<br>
+    Please select a font set:<br>
+    <input type="radio" name="font" value="0" id="f0">0<br>
+    <input type="radio" name="font" value="1" id="f1">1<br>
+    <button id="update">Update</button>
+    <button id="export">Download as SVG</button>
+     
+    <script type="text/paperscript"  canvas="canvas">
+
+//===============================================
+
+
+//available color palettes
+var palettes = [
+    ["#000000","#225378","#1695A3","#ACF0F2","#F3FFE2","#EB7F00"],
+    ["#FFFFFF","#7BE3D6","#755085","#00FFEC","#FFAFDF"],
+    ["#553344","#997788","#EE8866","#DDDDEE","#AACCDD"],
+    ["#684007","#796002","#430E37","#6C0B0B","#042E04"],
+    ["#E3D6AB","#778979","#CCDCC1","#A9916B","#D78258"]];
+
+//which color palette to use for text
+var paletteIndex = 0; //make this configurable later
+
+//which color palette to use for background blocks
+var blockPaletteIndex = 0; //make this configurable later
+//transparency of background blocks
+var blockAlpha = 0; 
+//available fonts
+var fonts = [["Erica One","Passion One","Playfair Display SC"],
+    ["Emilys Candy", "Irish Grover", "Vast Shadow", "Monoton", "Kranky"]];
+//which font set to use
+var fontSet = 1;
+
+//size of the square in the middle
+var startSquare = 100; //make this configurable later
+//height of each block
+var textHeight = startSquare/2;
+// amountToWorkWith = (view.bounds - startSquare) / 2
+// (numberOfBlocks/4)
+//increase textHeight in the outer boxes
+var textIncrease = 1; 
+// 1 = no difference 
+// >1 = increase in size 
+// <1 = decrease in size
+
+//number of blocks (should be a multiple of 4)
+var numberOfBlocks = 16; //make this configurable later
+
+//set the background color
+var background = new Path.Rectangle(view.bounds);
+background.fillColor = palettes[paletteIndex][0];
+
+//currentStartX: current leftmost edge of motif
+var currentStartX = (view.bounds.width - startSquare)/2;
+//currentStartY: current top edge of motif
+var currentStartY = (view.bounds.width - startSquare)/2;
+
+//currentEndX: current right edge of motif
+var currentEndX = currentStartX + startSquare;
+//currentEndY: current bottom edge of motif
+var currentEndY = currentStartX + startSquare;
+
+//text to be displayed
+var name =  document.getElementById('name').value; //make this configurable later
+
+//all items in the scene, other than the background
+var items = [];
+
+//===============================================
+
+function draw(){
+
+    //clear everything to start drawing again
+    for( var key=0; key<items.length; key++){
+        items[key].remove();
+    }
+    items = [];
+
+
+    //start drawing
+    for(var i=1; i <= numberOfBlocks; i++){
+
+        switch(i%4){
+        case 1:
+            var point = new Point(currentStartX,currentStartY-textHeight);
+            var size = new Size(currentEndX - currentStartX, textHeight);
+            var rect = new Path.Rectangle(point, size);
+            rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            rect.fillColor.alpha = blockAlpha;
+            items.push(rect);
+
+            var text = new PointText(point);
+            text.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            text.fontFamily = fonts[fontSet][Math.floor(Math.random()*fonts[fontSet].length)];
+            text.content = name;
+            text.fitBounds( rect.bounds );
+
+            if(i != 1) {
+                text.scale( size.width/text.bounds.width, 1);
+            }
+
+            items.push(text);
+            currentStartY = currentStartY-textHeight;
+            break;
+
+        case 2: 
+            var point = new Point(currentEndX,currentStartY);
+            var size = new Size(textHeight,currentEndY-currentStartY+textHeight);
+            var rect = new Path.Rectangle(point, size);
+            //rect.strokeColor = 'black';
+            rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            rect.fillColor.alpha = blockAlpha;
+            items.push(rect);
+
+            var text = new PointText(new Point(currentEndX+textHeight,currentStartY));
+            text.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            text.fontFamily = fonts[fontSet][Math.floor(Math.random()*fonts[fontSet].length)];
+            text.content = name;
+            text.rotate(90);
+            text.fitBounds( rect.bounds );
+            if(i != 2) {
+                text.scale( 1, size.height/text.bounds.height );
+            }
+
+            items.push(text);
+            currentEndX = currentEndX+textHeight;
+            currentEndY = currentEndY+textHeight;
+            break;
+
+        case 3:
+            var point = new Point(currentStartX-textHeight,currentEndY-textHeight);
+            var size = new Size(currentEndX-currentStartX,textHeight);
+            var rect = new Path.Rectangle(point, size);
+            //rect.strokeColor = 'black';
+            rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            rect.fillColor.alpha = blockAlpha;
+            items.push(rect);
+
+            var text = new PointText(new Point(currentStartX-textHeight+(currentEndX-currentStartX),currentStartY));
+            text.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            text.fontFamily = fonts[fontSet][Math.floor(Math.random()*fonts[fontSet].length)];
+            text.content = name;
+            text.rotate(180);
+            text.fitBounds( rect.bounds );
+            if(i != 3) {
+                text.scale( size.width/text.bounds.width, 1 );
+            }
+
+            items.push(text);
+
+            currentStartX = currentStartX-textHeight;
+            break;
+
+        case 0:
+            var point = new Point(currentStartX,currentEndY-textHeight);
+            var size = new Size(textHeight,-1*(currentEndY-currentStartY-textHeight));
+            var rect = new Path.Rectangle(point, size);
+            //rect.strokeColor = 'black';
+            rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            rect.fillColor.alpha = blockAlpha;
+            items.push(rect);
+
+            var text = new PointText(new Point(currentEndX,currentStartY));
+            text.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            text.content = name;
+            text.fontFamily = fonts[fontSet][Math.floor(Math.random()*fonts[fontSet].length)];
+            text.rotate(270);
+            text.translate(0,currentEndY-currentStartY-textHeight);
+            text.fitBounds( rect.bounds );
+            if(i != 4) {
+                text.scale( 1, (size.height/text.bounds.height)*-1 );
+            }
+            items.push(text);
+
+            textHeight = textHeight * textIncrease;
+            break;
+        }
+    }
+
+
+    //reset vars to starting conditions
+    currentStartX = (view.bounds.width - startSquare)/2;
+    currentStartY = (view.bounds.width - startSquare)/2;
+    currentEndX = currentStartX + startSquare;
+    currentEndY = currentStartX + startSquare;
+    textHeight = startSquare/2;
+
+}
+
+draw();
+
+var update = document.getElementById('update');
+update.onclick = function() {
+    name = document.getElementById('name').value;  
+
+    if( document.getElementById('r0').checked) paletteIndex=0;
+    else if( document.getElementById('r1').checked) paletteIndex=1;
+    else if( document.getElementById('r2').checked) paletteIndex=2;
+    else if( document.getElementById('r3').checked) paletteIndex=3;
+
+    if( document.getElementById('f0').checked) fontSet=0;
+    else if( document.getElementById('f1').checked) fontSet=1;
+
+    background.fillColor = palettes[paletteIndex][0];
+
+    draw();
+}
+
+
+
+function downloadDataUri(options) {
+    document.getElementById('<form method="post" action="' + options.url
+        + '" style="display:none"><input type="hidden" name="filename" value="'
+        + options.filename + '"/><input type="hidden" name="data" value="'
+        + options.data + '"/></form>').appendTo('body').submit().remove();
+}
+
+var exportSVG = document.getElementById('export');
+
+exportSVG.onclick = function() {
+    var svg = project.exportSVG({ asString: true });
+    downloadDataUri({
+        data: 'data:image/svg+xml;base64,' + btoa(svg),
+        filename: 'export.svg'
+    });
+}
+//===============================================
+
+</script>   
+    <canvas id="canvas" height="600" width="600"></canvas>
+</body>
+</html>

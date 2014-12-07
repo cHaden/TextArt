@@ -1,0 +1,30 @@
+startSquare = <amount>
+textHeight = startSquare/2
+numberOfBlocks = <amount2>
+
+currentStartXY = {0,0}
+
+currentEndXY = {startSquare,startSquare}
+
+for(i=1, i <= numberOfBlocks, i++)
+
+switch(i%4)
+	case 1:
+		rect = {currentStartX, currentEndY, currentEndX, currentEndY+textHeight}
+		currentEndY = currentEndY+textHeight
+
+	case 2:
+		rect = {currentEndX,currentStartY-textHeight,currentEndX+textHeight,currentEndY}
+
+		currentEndX = currentEndX+textHeight
+		currentStartY = currentStartY-textHeight
+
+	case 3:
+		rect = {currentStartX-textHeight,currentStartY-textHeight,currentEndX-textHeight, currentStartY+textHeight}
+
+		currentStartX = currentStartX-textHeight
+
+	case 0:
+		rect = {currentStartX, currentStartY+textHeight, currentStartX+textHeight, currentEndY}
+
+
