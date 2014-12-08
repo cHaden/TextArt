@@ -241,22 +241,29 @@ update.onclick = function() {
 }
 
 
+var downloadAsSVG = function (fileName) {
 
-function downloadDataUri(options) {
-    document.getElementById('<form method="post" action="' + options.url
-        + '" style="display:none"><input type="hidden" name="filename" value="'
-        + options.filename + '"/><input type="hidden" name="data" value="'
-        + options.data + '"/></form>').appendTo('body').submit().remove();
+   if(!fileName) {
+       fileName = "paperjs_example.svg"
+   }
+
+   var url = "data:image/svg+xml;utf8," + encodeURIComponent(paper.project.exportSVG({asString:true}));
+
+   var link = document.createElement("a");
+   link.download = fileName;
+   link.href = url;
+   link.click();
 }
+
 
 var exportSVG = document.getElementById('export');
 
 exportSVG.onclick = function() {
     var svg = project.exportSVG({ asString: true });
-    downloadDataUri({
-        data: 'data:image/svg+xml;base64,' + btoa(svg),
-        filename: 'export.svg'
-    });
+    console.log("export button clicked");
+    console.log(btoa(svg));
+
+    downloadAsSVG();
 }
 //===============================================
 
