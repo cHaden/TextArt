@@ -244,7 +244,7 @@ update.onclick = function() {
 var downloadAsSVG = function (fileName) {
 
    if(!fileName) {
-       fileName = "paperjs_example.svg"
+       fileName = "textArt.svg"
    }
 
    var url = "data:image/svg+xml;utf8," + encodeURIComponent(paper.project.exportSVG({asString:true}));
@@ -255,15 +255,26 @@ var downloadAsSVG = function (fileName) {
    link.click();
 }
 
+var downloadAsPng = function (fileName){
+    if(!fileName){
+        fileName = "textArt.png";
+    }
 
-var exportSVG = document.getElementById('export');
+    var canvas = document.getElementById("canvas");
+    var url = canvas.toDataURL("image/png");
 
-exportSVG.onclick = function() {
-    var svg = project.exportSVG({ asString: true });
-    console.log("export button clicked");
-    console.log(btoa(svg));
+    var link = document.createElement("a");
+    link.download = fileName;
+    link.href = url;
+    link.click();
+}
 
-    downloadAsSVG();
+
+var exportImage = document.getElementById('export');
+
+exportImage.onclick = function() {
+   // downloadAsSVG();
+   downloadAsPng();
 }
 //===============================================
 
