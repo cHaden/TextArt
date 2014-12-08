@@ -1,0 +1,36 @@
+/*
+Spoonflower palette:
+green: #7c9f2a
+blue: #a0c8c8
+yellow: #dfb500
+taupe: #928a81
+dark brown: #493a14
+*/
+
+body{
+	background-color: #928a81;
+	color: #493a14;
+	font-family: arial;
+}
+
+.textbox{
+	border: 1px dotted #493a14;
+	background: #928a81;
+}
+
+.radio{
+	border: 0px;
+	background: #a0c8c8;
+}
+button{
+	background: #a0c8c8;
+	color: #493a14;
+	border: 0px;
+
+}
+
+div {
+  -webkit-columns: 2 250px;
+     -moz-columns: 2 250px;
+          columns: 2 250px;
+}

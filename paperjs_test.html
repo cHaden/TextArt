@@ -4,6 +4,8 @@
 
     <link href='http://fonts.googleapis.com/css?family=Erica+One|Passion+One:400,900|Playfair+Display+SC:400,900' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Emilys+Candy|Irish+Grover|Vast+Shadow|Monoton|Kranky' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="paperjs_test.css">
+
 
     <meta charset="UTF-8">
     <title>Paper JS Test</title>
@@ -11,7 +13,7 @@
 
 </head>
 <body>
-
+    <div class="main">
     <!--hacky mcHackerson: trasparent div to make the google fonts load-->
     <div style="color: transparent; height: 1px;">
     <p style="font-family: Erica One">Erica One</p>
@@ -26,18 +28,18 @@
     </div>
 
     Please enter a name:<br>
-    <input type="text" name="name" value="Your name here" id="name">
+    <input class="textbox" type="text" name="name" value="Your name here" id="name">
     <br><br>
     Please select a color palette:<br>
-    <input type="radio" name="palette" value="0" id="r0">0<br>
-    <input type="radio" name="palette" value="1" id="r1">1<br>
-    <input type="radio" name="palette" value="2" id="r2">2<br>
-    <input type="radio" name="palette" value="3" id="r3">3<br>
+    <input class="radio" type="radio" name="palette" value="0" id="r0">0<br>
+    <input class="radio" type="radio" name="palette" value="1" id="r1">1<br>
+    <input class="radio" type="radio" name="palette" value="2" id="r2">2<br>
+    <input class="radio" type="radio" name="palette" value="3" id="r3">3<br>
     Please select a font set:<br>
-    <input type="radio" name="font" value="0" id="f0">0<br>
-    <input type="radio" name="font" value="1" id="f1">1<br>
+    <input class="radio" type="radio" name="font" value="0" id="f0">0<br>
+    <input class="radio" type="radio" name="font" value="1" id="f1">1<br>
     <button id="update">Update</button>
-    <button id="export">Download as SVG</button>
+    <button id="export">Download as PNG</button>
      
     <script type="text/paperscript"  canvas="canvas">
 
@@ -280,5 +282,6 @@ exportImage.onclick = function() {
 
 </script>   
     <canvas id="canvas" height="600" width="600"></canvas>
+    </div>
 </body>
 </html>
