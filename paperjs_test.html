@@ -116,11 +116,14 @@ var textIncrease = 1;
 //number of blocks (should be a multiple of 4)
 var numberOfBlocks = 16; //make this configurable later
 
+//modifier to make sure that the textHeight will fit canvas according to scaling
+var scalingModifier = 0;
+for( var num=0; num<Math.floor(numberOfBlocks/4); num++){
+    scalingModifier += Math.pow(textIncrease,num);
+}
+
 //height of each block
-//var textHeight = startSquare/2;
-var textHeight = Math.floor(((view.bounds.width - startSquare)/2)/(Math.floor(numberOfBlocks/4)));
-// amountToWorkWith = (view.bounds - startSquare) / 2
-// (numberOfBlocks/4)
+var textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifier);
 
 //set the background color
 var background = new Path.Rectangle(view.bounds);
@@ -171,9 +174,9 @@ function draw(){
             text.content = name;
             text.fitBounds( rect.bounds );
 
-            if(i != 1) {
+            //if(i != 1) {
                 text.scale( size.width/text.bounds.width, 1);
-            }
+            //}
 
             items.push(text);
             currentStartY = currentStartY-textHeight;
@@ -183,7 +186,6 @@ function draw(){
             var point = new Point(currentEndX,currentStartY);
             var size = new Size(textHeight,currentEndY-currentStartY+textHeight);
             var rect = new Path.Rectangle(point, size);
-            //rect.strokeColor = 'black';
             rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
             rect.fillColor.alpha = blockAlpha;
             items.push(rect);
@@ -194,9 +196,9 @@ function draw(){
             text.content = name;
             text.rotate(90);
             text.fitBounds( rect.bounds );
-            if(i != 2) {
+            //if(i != 2) {
                 text.scale( 1, size.height/text.bounds.height );
-            }
+            //}
 
             items.push(text);
             currentEndX = currentEndX+textHeight;
@@ -207,7 +209,6 @@ function draw(){
             var point = new Point(currentStartX-textHeight,currentEndY-textHeight);
             var size = new Size(currentEndX-currentStartX,textHeight);
             var rect = new Path.Rectangle(point, size);
-            //rect.strokeColor = 'black';
             rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
             rect.fillColor.alpha = blockAlpha;
             items.push(rect);
@@ -218,9 +219,9 @@ function draw(){
             text.content = name;
             text.rotate(180);
             text.fitBounds( rect.bounds );
-            if(i != 3) {
+            //if(i != 3) {
                 text.scale( size.width/text.bounds.width, 1 );
-            }
+            //}
 
             items.push(text);
 
@@ -231,7 +232,6 @@ function draw(){
             var point = new Point(currentStartX,currentEndY-textHeight);
             var size = new Size(textHeight,-1*(currentEndY-currentStartY-textHeight));
             var rect = new Path.Rectangle(point, size);
-            //rect.strokeColor = 'black';
             rect.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
             rect.fillColor.alpha = blockAlpha;
             items.push(rect);
@@ -243,9 +243,9 @@ function draw(){
             text.rotate(270);
             text.translate(0,currentEndY-currentStartY-textHeight);
             text.fitBounds( rect.bounds );
-            if(i != 4) {
+            //if(i != 4) {
                 text.scale( 1, (size.height/text.bounds.height)*-1 );
-            }
+            //}
             items.push(text);
 
             textHeight = textHeight * textIncrease;
@@ -259,7 +259,7 @@ function draw(){
     currentStartY = (view.bounds.width - startSquare)/2;
     currentEndX = currentStartX + startSquare;
     currentEndY = currentStartX + startSquare;
-    textHeight = Math.floor(((view.bounds.width - startSquare)/2)/(Math.floor(numberOfBlocks/4)));
+    textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifier);
 
 
 }
