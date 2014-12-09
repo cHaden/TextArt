@@ -12,6 +12,7 @@ h1{
 }
 
 body{
+	background-image: url("linen.png");
 	background-color: #928a81;
 	color: #493a14;
 	font-family: arial;

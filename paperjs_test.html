@@ -106,10 +106,7 @@ var fontSet = 1;
 
 //size of the square in the middle
 var startSquare = 100; //make this configurable later
-//height of each block
-var textHeight = startSquare/2;
-// amountToWorkWith = (view.bounds - startSquare) / 2
-// (numberOfBlocks/4)
+
 //increase textHeight in the outer boxes
 var textIncrease = 1; 
 // 1 = no difference 
@@ -118,6 +115,12 @@ var textIncrease = 1;
 
 //number of blocks (should be a multiple of 4)
 var numberOfBlocks = 16; //make this configurable later
+
+//height of each block
+//var textHeight = startSquare/2;
+var textHeight = Math.floor(((view.bounds.width - startSquare)/2)/(Math.floor(numberOfBlocks/4)));
+// amountToWorkWith = (view.bounds - startSquare) / 2
+// (numberOfBlocks/4)
 
 //set the background color
 var background = new Path.Rectangle(view.bounds);
@@ -256,7 +259,8 @@ function draw(){
     currentStartY = (view.bounds.width - startSquare)/2;
     currentEndX = currentStartX + startSquare;
     currentEndY = currentStartX + startSquare;
-    textHeight = startSquare/2;
+    textHeight = Math.floor(((view.bounds.width - startSquare)/2)/(Math.floor(numberOfBlocks/4)));
+
 
 }
 
