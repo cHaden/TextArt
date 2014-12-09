@@ -15,7 +15,7 @@ body{
 
 .textbox{
 	border: 1px dotted #493a14;
-	background: #928a81;
+	background: #dfb500;
 }
 
 .radio{
@@ -23,14 +23,31 @@ body{
 	background: #a0c8c8;
 }
 button{
-	background: #a0c8c8;
+	background: #dfb500;
 	color: #493a14;
 	border: 0px;
 
 }
-
-div {
+/*
+.main{
   -webkit-columns: 2 250px;
      -moz-columns: 2 250px;
           columns: 2 250px;
 }
+*/
+
+.box{
+	background: #a0c8c8;
+	border-radius: 10px;
+	padding: 10px 10px 10px 25px;
+}
+
+.menu{
+	display: inline-block;
+}
+
+.canvas{
+	display: inline-block;
+	margin: 50px;
+}
+

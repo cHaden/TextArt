@@ -14,6 +14,9 @@
 </head>
 <body>
     <div class="main">
+
+        <div class="menu">
+    <H1>Text Art Generator</H1>
     <!--hacky mcHackerson: trasparent div to make the google fonts load-->
     <div style="color: transparent; height: 1px;">
     <p style="font-family: Erica One">Erica One</p>
@@ -27,20 +30,33 @@
     <p style="font-family: Kranky">Kranky</p>
     </div>
 
+    <div class="box">
     Please enter a name:<br>
     <input class="textbox" type="text" name="name" value="Your name here" id="name">
+    </div>
     <br><br>
+
+    <div class="box">
     Please select a color palette:<br>
     <input class="radio" type="radio" name="palette" value="0" id="r0">0<br>
     <input class="radio" type="radio" name="palette" value="1" id="r1">1<br>
     <input class="radio" type="radio" name="palette" value="2" id="r2">2<br>
     <input class="radio" type="radio" name="palette" value="3" id="r3">3<br>
+    </div>
+    <br><br>
+
+    <div class="box">
     Please select a font set:<br>
     <input class="radio" type="radio" name="font" value="0" id="f0">0<br>
     <input class="radio" type="radio" name="font" value="1" id="f1">1<br>
+    </div>
+    <br><br>
+
+    <div class="box">
     <button id="update">Update</button>
     <button id="export">Download as PNG</button>
-     
+    </div>
+     </div>
     <script type="text/paperscript"  canvas="canvas">
 
 //===============================================
@@ -280,8 +296,13 @@ exportImage.onclick = function() {
 }
 //===============================================
 
-</script>   
+</script>  
+<div class="canvas"> 
     <canvas id="canvas" height="600" width="600"></canvas>
-    </div>
+</div>
+
+
+</div>
+
 </body>
 </html>
