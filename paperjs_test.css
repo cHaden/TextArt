@@ -58,14 +58,23 @@ button{
 .main{
 display: table;
 }
+
 .menu{
 display: table-cell;
 vertical-align: middle;
-width: 300px;
+width: 350px;
 padding: 0px 50px 0px 0px;
 }
+
 .canvas{
 width: 600px;
+}
+
+.options{
+display: table-cell;
+vertical-align: middle;
+width: 300px;
+padding: 0px 0px 0px 50px;
 }
 
 span{

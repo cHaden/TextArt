@@ -29,6 +29,13 @@
             <p style="font-family: Monoton">Monoton</p>
             <p style="font-family: Kranky">Kranky</p>
         </div>
+        <!-- more hidden divs: make images available to paperjs-->
+        <img style="color:transparent; height: 0px" id="linen" src="./linen.png">
+        <img style="color:transparent; height: 0px" id="slate" src="./slate.jpg">
+        <img style="color:transparent; height: 0px" id="paper" src="./paper.jpg">
+
+
+
 
 
         <div class="box">
@@ -74,6 +81,7 @@
         <div class="box">
             <button id="update">Update</button>
             <button id="export">Download as PNG</button>
+            <button id="exportSVG">Download as SVG</button>
         </div>
     </div>
 
@@ -96,13 +104,22 @@ var paletteIndex = 0; //make this configurable later
 
 //which color palette to use for background blocks
 var blockPaletteIndex = 0; //make this configurable later
+
 //transparency of background blocks
 var blockAlpha = 0; 
+
 //available fonts
 var fonts = [["Erica One","Passion One","Playfair Display SC"],
     ["Emilys Candy", "Irish Grover", "Vast Shadow", "Monoton", "Kranky"]];
+
 //which font set to use
 var fontSet = 1;
+
+//textures available (by id)
+var textures = ["", "linen", "paper", "slate"];
+
+//which texture to use
+var textureIndex = 3; //make this configurable later
 
 //size of the square in the middle
 var startSquare = 100; //make this configurable later
@@ -128,6 +145,11 @@ var textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifie
 //set the background color
 var background = new Path.Rectangle(view.bounds);
 background.fillColor = palettes[paletteIndex][0];
+
+// set the background texture
+var raster = new Raster(textures[textureIndex]);
+// Move the raster to the center of the view
+raster.position = new Point(300,300); //currently hardcoded to assume textures are 600 px and canvas is 600
 
 //currentStartX: current leftmost edge of motif
 var currentStartX = (view.bounds.width - startSquare)/2;
@@ -316,17 +338,33 @@ var downloadAsPng = function (fileName){
 }
 
 
+//make the download as PNG button work
 var exportImage = document.getElementById('export');
 
 exportImage.onclick = function() {
-   // downloadAsSVG();
    downloadAsPng();
+}
+
+//make the download as SVG button work (experimental)
+var exportImageSVG = document.getElementById('exportSVG');
+
+exportImageSVG.onclick = function() {
+    downloadAsSVG();
 }
 //===============================================
 
 </script>  
 <div class="canvas"> 
     <canvas id="canvas" height="600" width="600"></canvas>
+</div>
+
+<div class="options">
+    <div class="box">
+        Use a texture?
+        Scale text?
+        Change number of blocks?
+        Log cabin layout or straight layout?
+    </div>
 </div>
 
 
