@@ -36,10 +36,10 @@
             <p style="font-family: Satisfy">Satisfy</p>
             <p style="font-family: Sacramento">Sacramento</p>
 
-            <p style="font-family: Spicy+Rice">Spicy+Rice</p>
+            <p style="font-family: Spicy Rice">Spicy+Rice</p>
             <p style="font-family: Diplomata">Diplomata</p>
             <p style="font-family: Ewert">Ewert</p>
-            <p style="font-family: Mystery+Quest">Mystery+Quest</p>
+            <p style="font-family: Mystery Quest">Mystery+Quest</p>
         </div>
         <!-- more hidden divs: make images available to paperjs-->
         <img style="color:transparent; height: 0px" id="linen" src="./linen.png">
@@ -58,7 +58,7 @@
 
         <div class="box">
             Please select a color palette:<br>
-            <input class="radio" type="radio" name="palette" value="0" id="r0">
+            <input class="radio" type="radio" name="palette" value="0" id="r0" checked>
                 <span style="background: #000000; color:#000000">00</span><span style="background: #225378; color:#225378">00</span><span style="background: #1695A3; color:#1695A3">00</span><span style="background: #ACF0F2; color:#ACF0F2">00</span><span style="background: #F3FFE2; color:#F3FFE2">00</span><span style="background: #EB7F00; color:#EB7F00">00</span><br>
             <input class="radio" type="radio" name="palette" value="1" id="r1">
                 <span style="background: #FFFFFF; color:#FFFFFF">00</span><span style="background: #7BE3D6; color:#7BE3D6">00</span><span style="background: #755085; color:#755085">00</span><span style="background: #00FFEC; color:#00FFEC">00</span><span style="background: #FFAFDF; color:#FFAFDF">00</span><br>
@@ -81,7 +81,7 @@
                 <span style="font-family: Erica One">Words </span>
                 <span style="font-family: Passion One">words </span>
                 <span style="font-family: Playfair Display SC">words </span><br>
-            <input class="radio" type="radio" name="font" value="1" id="f1">
+            <input class="radio" type="radio" name="font" value="1" id="f1" checked>
                 <span style="font-family: Emilys Candy">Words </span>
                 <span style="font-family: Irish Grover">words </span>
                 <span style="font-family: Vast Shadow">words </span>
@@ -93,10 +93,10 @@
                 <span style="font-family: Satisfy">words </span>
                 <span style="font-family: Sacramento">words </span><br>
             <input class="radio" type="radio" name="font" value="3" id="f3">
-                <span style="font-family: Spicy+Rice">Words </span>
+                <span style="font-family: Spicy Rice">Words </span>
                 <span style="font-family: Diplomata">words </span>
                 <span style="font-family: Ewert">words </span>
-                <span style="font-family: Mystery+Quest">words </span><br>
+                <span style="font-family: Mystery Quest">words </span><br>
         </div>
         <br><br>
 
@@ -148,6 +148,9 @@ var textureIndex = 0;
 //size of the square in the middle
 var startSquare = 100; //make this configurable later?
 
+//amount of padding to add to perimeter
+var padding = 30;
+
 //increase textHeight in the outer boxes
 var textIncrease = 1; 
 // 1 = no difference 
@@ -164,7 +167,7 @@ for( var num=0; num<Math.floor(numberOfBlocks/4); num++){
 }
 
 //height of each block
-var textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifier);
+var textHeight = Math.floor(((view.bounds.width - startSquare - padding)/2)/scalingModifier);
 
 //set the background color
 var background = new Path.Rectangle(view.bounds);
@@ -191,6 +194,9 @@ var name =  document.getElementById('name').value;
 //all items in the scene, other than the background
 var items = [];
 
+//drawing log cabin layout or straight 
+var layout = 1; //0 = log cabin, 1= straight
+
 //===============================================
 
 function draw(){
@@ -202,7 +208,68 @@ function draw(){
     items = [];
 
 
+    //if drawing straight:
+    if( layout == 1){
+        //divide canvas into numberOfBlocks/2 lines, with 2 words per line
+        textHeight = view.bounds.height / (numberOfBlocks/2);
+        currentStartX = 0;
+        currentStartY = 0;
+        currentEndX = view.bounds.height/2;
+        currentEndY = textHeight;
+
+        for(var i=1; i <= numberOfBlocks; i++){
+            var point = new Point(currentStartX,currentStartY);
+            var size = new Size(currentEndX - currentStartX, textHeight);
+            var rect = new Path.Rectangle(point, size);
+            var text = new PointText(point);
+            text.fillColor = palettes[paletteIndex][Math.floor(Math.random()*(palettes[paletteIndex].length-1))+1];
+            text.fontFamily = fonts[fontSet][Math.floor(Math.random()*fonts[fontSet].length)];
+            text.content = name;
+            text.fitBounds( rect.bounds );
+            items.push(text);
+
+            if( i%4 == 3){
+                var raster = text.rasterize(150);
+                raster.position.x += currentEndX/2;
+                items[items.length-1].remove();
+                items.push(raster);
+            }
+
+            if( i%4 == 0){
+                var raster = text.rasterize(150);
+                var rasterLeft = text.rasterize(150);
+                raster.position.x += rect.bounds.x/2;
+                rasterLeft.position.x -= rect.bounds.x + (rect.bounds.x/2);
+                items[items.length-1].remove();
+                items.push(raster);
+                items.push(rasterLeft);
+            }
+
+            if( i%2 == 1 ){
+                currentStartX = currentEndX;
+                currentEndX = view.bounds.width;
+            }
+            else if( i%2 == 0){
+                currentStartX = 0;
+                currentEndX = view.bounds.width/2;
+                currentStartY += textHeight;
+                currentEndY += textHeight;
+            }
+        }
+
+        //reset vars to starting conditions
+        currentStartX = (view.bounds.width - startSquare)/2;
+        currentStartY = (view.bounds.width - startSquare)/2;
+        currentEndX = currentStartX + startSquare;
+        currentEndY = currentStartX + startSquare;
+        textHeight = Math.floor(((view.bounds.width - startSquare - padding)/2)/scalingModifier);
+    }
+
+
+
+    //if drawing log cabin:
     //start drawing
+    if( layout == 0){
     for(var i=1; i <= numberOfBlocks; i++){
 
         switch(i%4){
@@ -305,8 +372,8 @@ function draw(){
     currentStartY = (view.bounds.width - startSquare)/2;
     currentEndX = currentStartX + startSquare;
     currentEndY = currentStartX + startSquare;
-    textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifier);
-
+    textHeight = Math.floor(((view.bounds.width - startSquare - padding)/2)/scalingModifier);
+}
 
 }
 
@@ -329,6 +396,9 @@ update.onclick = function() {
     else if( document.getElementById('f2').checked) fontSet=2;
     else if( document.getElementById('f3').checked) fontSet=3;
 
+    if(document.getElementById('log').checked) layout = 0;
+    else if(document.getElementById('straight').checked) layout = 1;
+
     if( document.getElementById('none').checked) textureIndex=document.getElementById('none').value;
     else if( document.getElementById('lin').checked) textureIndex=document.getElementById('lin').value;
     else if(document.getElementById('pap').checked) textureIndex=document.getElementById('pap').value;
@@ -350,7 +420,7 @@ update.onclick = function() {
     for( var num=0; num<Math.floor(numberOfBlocks/4); num++){
         scalingModifier += Math.pow(textIncrease,num);
     }
-    textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifier);
+    textHeight = Math.floor(((view.bounds.width - startSquare - padding)/2)/scalingModifier);
 
     background.fillColor = palettes[paletteIndex][0];
 
@@ -380,13 +450,17 @@ var downloadAsPng = function (fileName){
         fileName = "textArt.png";
     }
 
+//ver 1
     //var canvas = document.getElementById("canvas");
-    var tempImg = project.layers[0].rasterize();
-    console.log("project.layers.length: ");    
-    console.log(project.layers.length);
 
-    var url = tempImg.toDataURL("image/png");
+//ver 2
+    //var tempImg = project.layers[0].rasterize();
 
+    //var url = tempImg.toDataURL("image/png");
+
+//ver 3
+    var url = canvas.toDataURL("image/png");
+    
     var link = document.createElement("a");
     link.download = fileName;
     link.href = url;
@@ -421,16 +495,16 @@ exportImageSVG.onclick = function() {
 
     <div class="box">
         Select a layout<br>
-            <input class="radio" type="radio" name="layout" value="log" id="log">
+            <input class="radio" type="radio" name="layout" value="log" id="log" checked>
                 <span>Log cabin (default)</span><br>        
-            <input class="radio" type="radio" name="texture" value="straight" id="straight">
+            <input class="radio" type="radio" name="layout" value="straight" id="straight">
                 <span>Straight lines</span><br>
     </div>
     <br><br>
 
     <div class="box">
         Add a background texture?<br>
-        <input class="radio" type="radio" name="texture" value="0" id="none">
+        <input class="radio" type="radio" name="texture" value="0" id="none" checked>
                 <span>None (default)</span><br>
         <input class="radio" type="radio" name="texture" value="1" id="lin">
                 <span>Linen</span><br>
@@ -449,7 +523,7 @@ exportImageSVG.onclick = function() {
                 <span>8</span><br>        
         <input class="radio" type="radio" name="blockNum" value="12" id="12blocks">
                 <span>12</span><br>
-        <input class="radio" type="radio" name="blockNum" value="16" id="16blocks">
+        <input class="radio" type="radio" name="blockNum" value="16" id="16blocks" checked>
                 <span>16 (default)</span><br>
     </div>
     <br><br>
@@ -460,7 +534,7 @@ exportImageSVG.onclick = function() {
                 <span>Increases from the center out</span><br>        
             <input class="radio" type="radio" name="textheight" value="0.8" id="decrease">
                 <span>Decreases from the center out</span><br>        
-            <input class="radio" type="radio" name="textheight" value="1" id="static">
+            <input class="radio" type="radio" name="textheight" value="1" id="static" checked>
                 <span>Remains the same (default)</span><br>
     <div>
 

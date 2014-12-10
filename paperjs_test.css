@@ -11,12 +11,14 @@ h1{
 	color: #a0c8c8;
 	font-family: Monoton;
 	text-align: center;
+	font-size: 37px;
 }
 
 h2{
 	color: #a0c8c8;
 	font-family: Monoton;
 	text-align: center;
+	font-size: 28px;
 }
 
 body{
@@ -50,26 +52,26 @@ button{
 }
 
 .main{
-display: table;
+	display: table;
 }
 
 .menu{
-display: table-cell;
-vertical-align: middle;
-width: 350px;
-padding: 0px 50px 0px 0px;
+	display: table-cell;
+	vertical-align: middle;
+	width: 350px;
+	padding: 0px 50px 0px 0px;
 }
 
 .canvas{
-width: 600px;
-height: 600px;
+	width: 600px;
+	height: 600px;
 }
 
 .options{
-display: table-cell;
-vertical-align: middle;
-width: 300px;
-padding: 0px 0px 0px 50px;
+	display: table-cell;
+	vertical-align: middle;
+	width: 300px;
+	padding: 0px 0px 0px 50px;
 }
 
 span{
