@@ -329,6 +329,9 @@ update.onclick = function() {
     background.fillColor = palettes[paletteIndex][0];
 
     draw();
+
+    //make sure that the canvas updates with changes
+    paper.view.update();
 }
 
 
