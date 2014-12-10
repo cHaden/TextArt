@@ -1,0 +1,75 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="paperjs_test.css">
+</head>
+
+<body>
+<h1>Overview:</h1><br><br>
+
+<div class="box">
+<b>Word Art Generator:</b><br><br>
+<a href="http://needlenoodles.com/TextArt/paperjs_test.html">Main project</a><br>
+<a href="file:///Users/alex/TextArt/paperjs_test.html">Local copy</a><br><br>
+
+We print a lot of word art, so I wanted to make a basic app that could take a single word or phrase and generate a useable image file.<br><br>
+
+We start with the default settings, and can select a word or phrase to render<br>
+...a color palette to use (it randomly assigns colors from the selected palette)<br>
+...a font set to use (it also randomly assigns fonts from the selected set. These are pulled down from Google fonts)<br>
+...a layout to use (Log Cabin or Straight. Straight wraps the words horizontally so the image tiles)<br>
+...a background texture if desired<br>
+...total number of repeats to display (fit to the canvas size)<br>
+...and an option for the text to get larger, smaller, or stay the same from the center out (not applicable for straight layout)<br><br>
+
+Buttons:<Br>
+-- update: redraw with the selected options<br>
+-- Export as PNG: save canvas as a raster file<br>
+-- Export as SVG: save canvas as a vector file (in development)<br><br>
+</div><br><br>
+
+<div class="box">
+<b>Process:</b><br><br>
+
+Started with pseudocode<br>
+--pseudocode file<br>
+<a href="file:///Users/alex/TextArt%20copy/log_cabin_pseudocode.txt
+">file:///Users/alex/TextArt%20copy/log_cabin_pseudocode.txt</a><br><br>
+
+Made initial mockup with Fabric.js<br>
+--started with log cabin blocks to get the positioning right<br>
+<a href="file:///Users/alex/TextArt%20copy/fabric_test/fabric_test.html">Example</a><br><br>
+
+--Fabric.js had problems loading outside fonts, and was not really the tool for the job (I didn't need a click and drag interface)<br>
+<a href="file:///Users/alex/TextArt%20copy/fabric_test/fabric_font_test.html">Example</a><br><br>
+
+Rewrite with paper.js<br>
+--still probably overkill for the task at hand<br>
+--initial mockup: no stylesheet, just the canvas and basic form elements<br>
+<a href="file:///Users/alex/TextArt%20copy/paperjs_test_old.html">Example</a><br>
+<a href="file:///Users/alex/TextArt%20copy/paperjs_test_withform.html">Example</a><br><br>
+
+--get this thing in git and stop keeping filename_old_copy.html files like a chump!<br>
+<a href="https://github.com/cHaden/TextArt/commits/master">Github page</a><br><br>
+
+--added stylesheet, extra options, borrow shamelessly from Spoonflower's color palette<br>
+--bug stomping: why doesn't export to PNG work when there's a background image?? why is the canvas a different size if I use one host versus another??<br>
+<a href="file:///Users/alex/Downloads/textArt%20(10).png">Problem: exporting more than visible canvas</a><br><br>
+
+--Hey, it does most of the things!<br>
+<a href="file:///Users/alex/Downloads/textArt%20(16).png">Loads with background texture</a><br>
+<a href="file:///Users/alex/Downloads/textArt_tiled.png">Tiles reasonably</a><br><br><br>
+</div><br><br>
+
+<div class="box">
+<b>Obvious Problems:</b><br><br>
+
+-- I am not a graphic designer. The code does the Thing, but the Thing doesn't look completely great<br>
+-- SVG output is broken! There is no easy fix for this. Could rasterize all of the text, but that completely removes any benefit to exporting in a vector format<br>
+<a href="file:///Users/alex/Downloads/textArt.svg">Example</a><br>
+-- Short names don't look great. Ex. "Jo", "Dan"<br>
+-- Long names are *okay* Ex. "Ozymandias" Very long phrases look bad. Ex. "This is a super long phrase and looks silly"<br>
+-- Fabric.js isn't completely accurate in calculating the bounding box for text-- Some text gets clipped, expecially with italics and script. Could stick to "safe" fonts, or add more whitespace to buffer<br>
+-- File resolution is not configurable. A 600x600 file is about 4" at 150 DPI, but it's likely that people might want larger prints<br><br><br>
+</div>
+</body>
+</html>

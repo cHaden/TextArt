@@ -195,7 +195,7 @@ var name =  document.getElementById('name').value;
 var items = [];
 
 //drawing log cabin layout or straight 
-var layout = 1; //0 = log cabin, 1= straight
+var layout = 0; //0 = log cabin, 1= straight
 
 //===============================================
 
@@ -460,7 +460,7 @@ var downloadAsPng = function (fileName){
 
 //ver 3
     var url = canvas.toDataURL("image/png");
-    
+
     var link = document.createElement("a");
     link.download = fileName;
     link.href = url;
