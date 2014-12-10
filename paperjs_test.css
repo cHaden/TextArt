@@ -9,6 +9,14 @@ dark brown: #493a14
 
 h1{
 	color: #a0c8c8;
+	font-family: Monoton;
+	text-align: center;
+}
+
+h2{
+	color: #a0c8c8;
+	font-family: Monoton;
+	text-align: center;
 }
 
 body{

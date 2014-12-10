@@ -15,7 +15,7 @@
 <body>
 <div class="main">
     <div class="menu">
-        <H1 style="font-family: Monoton">Text Art Generator</H1>
+        <H1>Text Art Generator</H1>
 
         <!--hacky mcHackerson: trasparent div to make the google fonts load-->
         <div style="color: transparent; height: 1px;">
@@ -116,10 +116,10 @@ var fonts = [["Erica One","Passion One","Playfair Display SC"],
 var fontSet = 1;
 
 //textures available (by id)
-var textures = ["", "linen", "paper", "slate"];
+var textures = ['', 'linen', 'paper', 'slate'];
 
 //which texture to use
-var textureIndex = 3; //make this configurable later
+var textureIndex = 0; //make this configurable later
 
 //size of the square in the middle
 var startSquare = 100; //make this configurable later
@@ -303,6 +303,29 @@ update.onclick = function() {
     if( document.getElementById('f0').checked) fontSet=0;
     else if( document.getElementById('f1').checked) fontSet=1;
 
+    if( document.getElementById('none').checked) textureIndex=document.getElementById('none').value;
+    else if( document.getElementById('lin').checked) textureIndex=document.getElementById('lin').value;
+    else if(document.getElementById('pap').checked) textureIndex=document.getElementById('pap').value;
+    else if(document.getElementById('sla').checked) textureIndex=document.getElementById('sla').value;
+    raster.source = textures[ parseInt(textureIndex)];
+
+
+    if( document.getElementById('increase').checked) textIncrease=document.getElementById('increase').value;
+    else if( document.getElementById('decrease').checked) textIncrease=document.getElementById('decrease').value;
+    else if(document.getElementById('static').checked) textIncrease=document.getElementById('static').value;
+
+    if( document.getElementById('4blocks').checked) numberOfBlocks=4;
+    else if( document.getElementById('8blocks').checked) numberOfBlocks=8;
+    else if(document.getElementById('12blocks').checked) numberOfBlocks=12;
+    else if(document.getElementById('16blocks').checked) numberOfBlocks=16;
+
+    //update textHeight according to new number of blocks and scaling modifier
+    scalingModifier = 0;
+    for( var num=0; num<Math.floor(numberOfBlocks/4); num++){
+        scalingModifier += Math.pow(textIncrease,num);
+    }
+    textHeight = Math.floor(((view.bounds.width - startSquare)/2)/scalingModifier);
+
     background.fillColor = palettes[paletteIndex][0];
 
     draw();
@@ -359,12 +382,53 @@ exportImageSVG.onclick = function() {
 </div>
 
 <div class="options">
+    <h2>More Options!</h2><br><br>
+
     <div class="box">
-        Use a texture?
-        Scale text?
-        Change number of blocks?
-        Log cabin layout or straight layout?
+        Select a layout<br>
+            <input class="radio" type="radio" name="layout" value="log" id="log">
+                <span>Log cabin (default)</span><br>        
+            <input class="radio" type="radio" name="texture" value="straight" id="straight">
+                <span>Straight lines</span><br>
     </div>
+    <br><br>
+
+    <div class="box">
+        Add a background texture?<br>
+        <input class="radio" type="radio" name="texture" value="0" id="none">
+                <span>None (default)</span><br>
+        <input class="radio" type="radio" name="texture" value="1" id="lin">
+                <span>Linen</span><br>
+        <input class="radio" type="radio" name="texture" value="2" id="pap">
+                <span>Paper</span><br>       
+        <input class="radio" type="radio" name="texture" value="3" id="sla">
+                <span>Slate</span><br>
+    </div>
+    <br><br>
+
+    <div class="box">
+        Number of blocks<br>
+        <input class="radio" type="radio" name="blockNum" value="4" id="4blocks">
+                <span>4</span><br>
+        <input class="radio" type="radio" name="blockNum" value="8" id="8blocks">
+                <span>8</span><br>        
+        <input class="radio" type="radio" name="blockNum" value="12" id="12blocks">
+                <span>12</span><br>
+        <input class="radio" type="radio" name="blockNum" value="16" id="16blocks">
+                <span>16 (default)</span><br>
+    </div>
+    <br><br>
+
+    <div class="box">
+        Text height<br>
+            <input class="radio" type="radio" name="textheight" value="1.2" id="increase">
+                <span>Increases from the center out</span><br>        
+            <input class="radio" type="radio" name="textheight" value="0.8" id="decrease">
+                <span>Decreases from the center out</span><br>        
+            <input class="radio" type="radio" name="textheight" value="1" id="static">
+                <span>Remains the same (default)</span><br>
+    <div>
+
 </div>
 
 
