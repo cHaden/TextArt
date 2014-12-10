@@ -139,12 +139,6 @@ var fonts = [["Erica One", "Passion One", "Playfair Display SC"],
 //which font set to use
 var fontSet = 1;
 
-
-
-var linenImg = new Image();
-linenImg.crossOrigin = "Anonymous";
-linenImg.src = './linen.png';
-
 //textures available (by id)
 var textures = ['', 'linen', 'paper', 'slate'];
 
@@ -419,7 +413,7 @@ exportImageSVG.onclick = function() {
 
 </script>  
 <div class="canvas"> 
-    <canvas id="canvas" height="600" width="600"></canvas>
+    <canvas id="canvas" height=600 width=600 style='width: 600px; height: 600px'></canvas>
 </div>
 
 <div class="options">

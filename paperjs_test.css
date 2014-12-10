@@ -24,6 +24,7 @@ body{
 	background-color: #928a81;
 	color: #493a14;
 	font-family: arial;
+	font-size: 12px;
 }
 
 .textbox{
@@ -47,22 +48,7 @@ button{
 	border-radius: 10px;
 	padding: 10px 10px 10px 25px;
 }
-/*
-.menu{
-	display: inline-block;
-	background: #493a14;
-	padding: 50px;
-	height: 100%;
-	width: 250px;
-}
 
-.canvas{
-	display: inline-block;
-	height: 600px;
-	width: 600px;
-  position: relative;
-}
-*/
 .main{
 display: table;
 }
@@ -76,6 +62,7 @@ padding: 0px 50px 0px 0px;
 
 .canvas{
 width: 600px;
+height: 600px;
 }
 
 .options{
