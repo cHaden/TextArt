@@ -4,6 +4,8 @@
 
     <link href='http://fonts.googleapis.com/css?family=Erica+One|Passion+One:400,900|Playfair+Display+SC:400,900' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Emilys+Candy|Irish+Grover|Vast+Shadow|Monoton|Kranky' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Yellowtail|Yesteryear|Satisfy|Sacramento' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Spicy+Rice|Diplomata|Ewert|Mystery+Quest' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="paperjs_test.css">
 
 
@@ -28,6 +30,16 @@
             <p style="font-family: Vast Shadow">Vast Shadow</p>
             <p style="font-family: Monoton">Monoton</p>
             <p style="font-family: Kranky">Kranky</p>
+
+            <p style="font-family: Yellowtail">Yellowtail</p>
+            <p style="font-family: Yesteryear">Yesteryear</p>
+            <p style="font-family: Satisfy">Satisfy</p>
+            <p style="font-family: Sacramento">Sacramento</p>
+
+            <p style="font-family: Spicy+Rice">Spicy+Rice</p>
+            <p style="font-family: Diplomata">Diplomata</p>
+            <p style="font-family: Ewert">Ewert</p>
+            <p style="font-family: Mystery+Quest">Mystery+Quest</p>
         </div>
         <!-- more hidden divs: make images available to paperjs-->
         <img style="color:transparent; height: 0px" id="linen" src="./linen.png">
@@ -75,6 +87,16 @@
                 <span style="font-family: Vast Shadow">words </span>
                 <span style="font-family: Monoton">words </span>
                 <span style="font-family: Kranky">words </span><br>
+            <input class="radio" type="radio" name="font" value="2" id="f2">
+                <span style="font-family: Yellowtail">Words </span>
+                <span style="font-family: Yesteryear">words </span>
+                <span style="font-family: Satisfy">words </span>
+                <span style="font-family: Sacramento">words </span><br>
+            <input class="radio" type="radio" name="font" value="3" id="f3">
+                <span style="font-family: Spicy+Rice">Words </span>
+                <span style="font-family: Diplomata">words </span>
+                <span style="font-family: Ewert">words </span>
+                <span style="font-family: Mystery+Quest">words </span><br>
         </div>
         <br><br>
 
@@ -100,17 +122,19 @@ var palettes = [
     ["#493a14","#a0c8c8","#dfb500","#928a81","#7c9f2a"]];
 
 //which color palette to use for text
-var paletteIndex = 0; //make this configurable later
+var paletteIndex = 0; 
 
 //which color palette to use for background blocks
-var blockPaletteIndex = 0; //make this configurable later
+var blockPaletteIndex = 0; 
 
 //transparency of background blocks
-var blockAlpha = 0; 
+var blockAlpha = 0; //this is just for troubleshooting. Set to 0 to hide the blocks
 
 //available fonts
-var fonts = [["Erica One","Passion One","Playfair Display SC"],
-    ["Emilys Candy", "Irish Grover", "Vast Shadow", "Monoton", "Kranky"]];
+var fonts = [["Erica One", "Passion One", "Playfair Display SC"],
+    ["Emilys Candy", "Irish Grover", "Vast Shadow", "Monoton", "Kranky"],
+    ["Yellowtail", "Yesteryear", "Satisfy", "Sacramento"],
+    ["Spicy Rice", "Diplomata", "Ewert", "Mystery Quest"]];
 
 //which font set to use
 var fontSet = 1;
@@ -119,10 +143,10 @@ var fontSet = 1;
 var textures = ['', 'linen', 'paper', 'slate'];
 
 //which texture to use
-var textureIndex = 0; //make this configurable later
+var textureIndex = 0; 
 
 //size of the square in the middle
-var startSquare = 100; //make this configurable later
+var startSquare = 100; //make this configurable later?
 
 //increase textHeight in the outer boxes
 var textIncrease = 1; 
@@ -131,7 +155,7 @@ var textIncrease = 1;
 // <1 = decrease in size
 
 //number of blocks (should be a multiple of 4)
-var numberOfBlocks = 16; //make this configurable later
+var numberOfBlocks = 16; 
 
 //modifier to make sure that the textHeight will fit canvas according to scaling
 var scalingModifier = 0;
@@ -162,7 +186,7 @@ var currentEndX = currentStartX + startSquare;
 var currentEndY = currentStartX + startSquare;
 
 //text to be displayed
-var name =  document.getElementById('name').value; //make this configurable later
+var name =  document.getElementById('name').value; 
 
 //all items in the scene, other than the background
 var items = [];
@@ -302,6 +326,8 @@ update.onclick = function() {
 
     if( document.getElementById('f0').checked) fontSet=0;
     else if( document.getElementById('f1').checked) fontSet=1;
+    else if( document.getElementById('f2').checked) fontSet=2;
+    else if( document.getElementById('f3').checked) fontSet=3;
 
     if( document.getElementById('none').checked) textureIndex=document.getElementById('none').value;
     else if( document.getElementById('lin').checked) textureIndex=document.getElementById('lin').value;
@@ -354,13 +380,19 @@ var downloadAsPng = function (fileName){
         fileName = "textArt.png";
     }
 
-    var canvas = document.getElementById("canvas");
-    var url = canvas.toDataURL("image/png");
+    //var canvas = document.getElementById("canvas");
+    var tempImg = project.layers[0].rasterize();
+    console.log("project.layers.length: ");    
+    console.log(project.layers.length);
+
+    var url = tempImg.toDataURL("image/png");
 
     var link = document.createElement("a");
     link.download = fileName;
     link.href = url;
     link.click();
+
+    tempImg.remove();
 }
 
 
